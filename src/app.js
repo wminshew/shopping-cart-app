@@ -1,4 +1,6 @@
 "use strict"
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {applyMiddleware, createStore} from 'redux';
 import logger from 'redux-logger';
 
@@ -9,15 +11,14 @@ import reducers from './reducers/index.js';
 import {addToCart} from './actions/cartActions.js';
 import {postBooks, deleteBook, updateBook} from './actions/bookActions.js';
 
+// import react components
+import BooksList from './components/pages/booksList.js';
+
 // create store
 const middleware = applyMiddleware(logger);
 const store = createStore(reducers, middleware);
 
-// add console outputs for testing
-// store.subscribe(() => {
-// 	// console.log(`The state of the store is ${store.getState()}`)
-// 	console.log('The state of the store is ', store.getState())
-// })
+ReactDOM.render(<BooksList />, document.getElementById('app'));
 
 // dispatch actions
 //

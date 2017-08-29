@@ -1,0 +1,13 @@
+{
+	"libs": [
+		"react"
+	]
+	"plugins": {
+		"node": {},
+		"requirejs": {},
+		"es_modules": {},
+		"webpack": {
+			"configPath": "./webpack.config.js"
+		}
+	}
+}
