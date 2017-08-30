@@ -1,7 +1,23 @@
 "use strict"
 
-export const bookReducer = (state={ books:[] }, action) => {
+export const bookReducer = (state={ books: [
+	{
+		id: 1,
+		title: 'title',
+		description: 'this is the book description',
+		price: 33.33
+	},
+	{
+		id: 2,
+		title: 'second title',
+		description: 'this is the second book description',
+		price: 50
+	}
+] }, action) => {
 	switch(action.type) {
+		case "GET_BOOKS":
+			return { ...state, books:[...state.books] };
+			break;
 		case "POST_BOOKS":
 			return { books:[...state.books, ...action.payload] };
 			break;

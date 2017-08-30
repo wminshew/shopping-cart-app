@@ -1,5 +1,11 @@
 "use strict"
 
+export const getBooks = (books) => {
+	return {
+		type: "GET_BOOKS"
+	}
+}
+
 export const postBooks = (books) => {
 	return {
 		type: "POST_BOOKS",
