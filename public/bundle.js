@@ -15318,6 +15318,12 @@ var addToCart = exports.addToCart = function addToCart(book) {
 		payload: book
 	};
 };
+var deleteFromCart = exports.deleteFromCart = function deleteFromCart(book) {
+	return {
+		type: "DELETE_FROM_CART",
+		payload: book
+	};
+};
 
 /***/ }),
 /* 175 */
@@ -32791,6 +32797,14 @@ var cartReducer = exports.cartReducer = function cartReducer() {
 		case "ADD_TO_CART":
 			return { cart: [].concat(_toConsumableArray(state.cart), _toConsumableArray(action.payload)) };
 			break;
+		case "DELETE_FROM_CART":
+			var indexToDelete = state.cart.findIndex(function (book) {
+				return book._id == action.payload._id;
+			});
+			return { cart: [].concat(_toConsumableArray(state.cart.slice(0, indexToDelete)), _toConsumableArray(state.cart.slice(indexToDelete + 1))) };
+			break;
+			return { cart: [].concat(_toConsumableArray(state.cart), _toConsumableArray(action.payload)) };
+			break;
 	}
 	return state;
 };
@@ -44150,6 +44164,10 @@ var _reactBootstrap = __webpack_require__(74);
 
 var _reactRedux = __webpack_require__(56);
 
+var _redux = __webpack_require__(44);
+
+var _cartActions = __webpack_require__(174);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44172,7 +44190,10 @@ var Cart = function (_React$Component) {
 			args[_key] = arguments[_key];
 		}
 
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cart.__proto__ || Object.getPrototypeOf(Cart)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cart.__proto__ || Object.getPrototypeOf(Cart)).call.apply(_ref, [this].concat(args))), _this), _this.deleteItem = function (book) {
+			console.log('Passing to deleteFromCart: ' + book);
+			_this.props.deleteFromCart(book);
+		}, _this.render = function () {
 			if (_this.props.cart[0]) {
 				// cart is not empty
 				var cartItems = _this.props.cart.map(function (book) {
@@ -44239,7 +44260,7 @@ var Cart = function (_React$Component) {
 									),
 									_react2.default.createElement(
 										_reactBootstrap.Button,
-										{ bsStyle: 'danger', bsSize: 'small' },
+										{ onClick: _this.deleteItem.bind(_this, book), bsStyle: 'danger', bsSize: 'small' },
 										'DELETE'
 									)
 								)
@@ -44267,8 +44288,13 @@ var mapStateToProps = function mapStateToProps(state) {
 		cart: state.cart.cart
 	};
 };
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	return (0, _redux.bindActionCreators)({
+		deleteFromCart: _cartActions.deleteFromCart
+	}, dispatch);
+};
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Cart);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cart);
 
 /***/ })
 /******/ ]);

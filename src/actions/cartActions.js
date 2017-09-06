@@ -6,3 +6,9 @@ export const addToCart = (book) => {
 		payload: book
 	}
 }
+export const deleteFromCart = (book) => {
+	return {
+		type: "DELETE_FROM_CART",
+		payload: book
+	}
+}
