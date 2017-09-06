@@ -4,6 +4,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getBooks} from '../../actions/bookActions.js';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
+import BookItem from './bookItem.js';
+import BookForm from './bookForm.js';
+import Cart from './cart.js';
 
 class BooksList extends React.Component {
 	componentDidMount = () => {
@@ -13,19 +17,29 @@ class BooksList extends React.Component {
 		const booksArr = this.props.books.map(
 			(book) => {
 				return (
-					<div key={book.id}>
-						<h2>{book.title}</h2>
-						<h2>{book.description}</h2>
-						<h2>{book.price}</h2>
-					</div>
+					<Col xs={12} sm={6} md={4} key={book._id}>
+						<BookItem 
+							_id={book._id}
+							title={book.title}
+							description={book.description}
+							price={book.price}
+						/>
+					</Col>
 				)
 			}
 		)
 		return (
-			<div>
-				<h1>Hello, React</h1>
-				{booksArr}
-			</div>
+			<Grid>
+				<Row>
+					<Cart />
+				</Row>
+				<Row>
+					<Col xs={12} sm={6}>
+						<BookForm />
+					</Col>
+					{booksArr}
+				</Row>
+			</Grid>
 		)
 	}
 }
