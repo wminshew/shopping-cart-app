@@ -13,10 +13,10 @@ export const postBooks = (books) => {
 	}
 }
 
-export const deleteBook = (book) => {
+export const deleteBook = (_id) => {
 	return {
 		type: "DELETE_BOOK",
-		payload: book
+		_id: _id
 	}
 }
 
