@@ -1,29 +1,16 @@
 "use strict"
 
-export const bookReducer = (state={ books: [
-	{
-		_id: 1,
-		title: 'title',
-		description: 'this is the book description',
-		price: 33.33
-	},
-	{
-		_id: 2,
-		title: 'second title',
-		description: 'this is the second book description',
-		price: 50
-	}
-] }, action) => {
+export const bookReducer = (state={ books: [] }, action) => {
 	switch(action.type) {
 		case "GET_BOOKS":
-			return { ...state, books:[...state.books] };
+			return { ...state, books:[...action.payload] };
 			break;
 		case "POST_BOOKS":
 			return { books:[...state.books, ...action.payload] };
 			break;
 		case "DELETE_BOOK":
 			const indexToDelete = state.books.findIndex( (book) => {
-				return book._id.toString() === action._id;
+				return book._id.toString() === action.payload;
 			} )
 			return { books: [
 				...state.books.slice(0, indexToDelete),
@@ -32,7 +19,7 @@ export const bookReducer = (state={ books: [
 			break;
 		case "UPDATE_BOOK":
 			const indexToUpdate = state.books.findIndex( (book) => {
-				return book._id === action.payload._id;
+				return book._id === action.payload;
 			} )
 			return { books: [
 				...state.books.slice(0, indexToUpdate),
