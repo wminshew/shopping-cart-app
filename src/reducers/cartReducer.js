@@ -2,52 +2,36 @@
 
 export const cartReducer = (state={ cart:[] }, action) => {
 	switch(action.type) {
+    case "GET_CART":
+      return { ...state,
+        cart: action.payload,
+				totalAmount: totals(action.payload).amount,
+				totalQuantity: totals(action.payload).quantity
+      }
+      break;
+
 		case "ADD_TO_CART":
-			let newCart = [...state.cart, ...action.payload];
-			return {
-				cart: newCart,
-				totalAmount: totals(newCart).amount,
-				totalQuantity: totals(newCart).quantity
+			return { ...state,
+				cart: action.payload,
+				totalAmount: totals(action.payload).amount,
+				totalQuantity: totals(action.payload).quantity
 			};
 			break;
+
 		case "UPDATE_CART":
-			let indexToUpdate = state.cart.findIndex( (book) => {
-				return book._id === action.payload._id;
-			} )
-			if(indexToUpdate === -1) {
-				// book not found
-				return { cart: [
-					...state.cart
-				] };
-			} else {
-				// book found
-				let bookToUpdate = {
-					...state.cart[indexToUpdate],
-					quantity: state.cart[indexToUpdate].quantity + action.payload.unit
-				}
-				newCart = [
-					...state.cart.slice(0, indexToUpdate),
-					bookToUpdate,
-					...state.cart.slice(indexToUpdate+1)
-				]
-				return { cart: newCart,
-					totalAmount: totals(newCart).amount,
-					totalQuantity: totals(newCart).quantity
-				};
-			}
+      return { ...state,
+        cart: action.payload,
+        totalAmount: totals(action.payload).amount,
+        totalQuantity: totals(action.payload).quantity
+      };
 			break;
+
 		case "DELETE_FROM_CART":
-			let indexToDelete = state.cart.findIndex( (book) => {
-				return book._id === action.payload._id;
-			} )
-			newCart = [
-				...state.cart.slice(0, indexToDelete),
-				...state.cart.slice(indexToDelete+1)
-			]
-			return { cart: newCart,
-				totalAmount: totals(newCart).amount,
-				totalQuantity: totals(newCart).quantity
-			};
+      return { ...state,
+        cart: action.payload,
+        totalAmount: totals(action.payload).amount,
+        totalQuantity: totals(action.payload).quantity
+      };
 			break;
 		break;
 	}

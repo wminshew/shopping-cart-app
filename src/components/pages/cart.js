@@ -3,7 +3,7 @@ import React from 'react';
 import {Modal, Panel, Row, Col, Label, ButtonGroup, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {updateCart, deleteFromCart} from '../../actions/cartActions.js';
+import {updateCart, deleteFromCart, getCart} from '../../actions/cartActions.js';
 
 class Cart extends React.Component {
 	constructor() {
@@ -12,35 +12,50 @@ class Cart extends React.Component {
 			showModal: false
 		}
 	}
+
+  componentDidMount = () => {
+    this.props.getCart();
+  }
+
 	open = () => {
 		this.setState({
 			showModal: true
 		})
 	}
+
 	close = () => {
 		this.setState({
 			showModal: false
 		})
 	}
+
 	updateCartQty = (_id, unit) => {
 		if (unit < 0) {
 			let bookIndex = this.props.cart.findIndex( (book) => {
-				return _id === book._id
+        return book._id === _id;
 			} )
 			if (this.props.cart[bookIndex].quantity === 1) {
 				this.props.deleteFromCart(this.props.cart[bookIndex]);
 			} else {
-				this.props.updateCart(_id, unit);
+				this.props.updateCart(_id, unit, this.props.cart);
 			}
 		} else {
-			this.props.updateCart(_id, unit);
+			this.props.updateCart(_id, unit, this.props.cart);
 		}
 	}
 
 	deleteItem = (book) => {
-		console.log(`Passing to deleteFromCart: ${book}`)
-		this.props.deleteFromCart(book);
-	}
+    let indexToDelete = this.props.cart.findIndex( (books) => {
+      return books._id === book._id;
+    } )
+
+    let newCart = [
+      ...this.props.cart.slice(0, indexToDelete),
+      ...this.props.cart.slice(indexToDelete+1)
+    ]
+
+    this.props.deleteFromCart(newCart);
+  }
 
 	render = () => {
 		if(this.props.cart[0]) {
@@ -122,7 +137,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		updateCart: updateCart,
-		deleteFromCart: deleteFromCart
+		deleteFromCart: deleteFromCart,
+    getCart: getCart,
 	}, dispatch)
 }
 

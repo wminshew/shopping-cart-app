@@ -27,7 +27,7 @@ class BookItem extends React.Component{
 				// book index not in cart
 				this.props.addToCart(book);
 			} else {
-				this.props.updateCart(_id, 1)
+				this.props.updateCart(_id, 1, this.props.cart)
 			}
 		}
 	}
